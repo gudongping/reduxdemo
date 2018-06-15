@@ -1,8 +1,5 @@
 import React,{Component} from "react"
-import {createStore} from '../state/redux'
-import reducer from './../state/reducer';
-
-let store = createStore(reducer);
+import store from "../state/store"
 
 export default class Counter extends Component {
 
@@ -14,11 +11,15 @@ export default class Counter extends Component {
   }
 
   componentWillMount() {
-    store.subscribe(()=>{
+    this.unsubscrib = store.subscribe(()=>{
       this.setState({
         number:store.getState().number
       })
     })
+  }
+
+  componentWillUnmount() {
+    this.unsubscrib();
   }
 
   render() {
