@@ -1,5 +1,5 @@
 let combineReducers = (reducers)=> {
-  return ({}, action)=> {
+  return (state = {}, action)=> {
     let newState = {};
     for(var key in reducers) {
       newState[key] = reducers[key](state[key],action);
