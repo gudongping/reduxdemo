@@ -1,29 +1,15 @@
 import React from "react"
 import {render} from "react-dom"
-/* import Counter from "./components/Counter"
+import store from "./state/store"
+import {Provider} from "react-redux"
+import NewCounter from "./components/NewCounter"
 
-render(<Counter/>, document.getElementById('root')); */
+// import Counter from "./components/Counter"
+// render(<Counter/>, document.getElementById('root')); 
 
-class AAA extends React.Component {
-  constructor() {
-    super();
-  }
-
-  render() {
-    return <BBB color={this.props.color} />
-  }
-}
-
-class BBB extends React.Component {
-  constructor() {
-    super();
-  }
-  render() {
-    return (
-      <div style={color}>BBB</div>
-    );
-  }
-}
-
-let color = {color: 'blue'}
-render(<AAA color = {color}/>, document.getElementById('root'));
+render(
+  <Provider store={store}>
+    <NewCounter/>
+  </Provider>, 
+  document.getElementById('root')
+);
