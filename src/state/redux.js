@@ -30,3 +30,57 @@ export const createStore = (reducer) => {
     dispatch
   }
 }
+
+let logger = store => next => action => {
+  console.log('before dispatch...');
+  next(action)
+  console.log('after dispatch...');
+}
+
+let thunk = store => next => action => {
+  if(typeof action === 'function') {
+    action(next);
+  } else {
+    next(action);  
+  }
+}
+
+let isPromise = (obj)=>obj.then
+
+let promise = store => next =>action => {
+  if(isPromise(action)) {
+    action.then((data)=>{
+      next(data)
+    })
+  } else {
+    next(action)
+  }
+}
+
+let applyMiddleware = (middleware)=> {
+  return (createStore)=>reducer=>{
+    let store = createStore(reducer);
+    middleware = middleware(store);
+    let dispath = middleware(store.dispatch);
+    return {
+      ...store,
+      dispatch
+    }
+  }
+}
+
+// let finalCreateStore = applyMiddleware(logger)
+let store = applyMiddleware(logger)(createStore)(reducer);
+store.dispatch({type:'ADD'});
+// thunk
+store.dispatch(function(dispatch) {
+  setTimeout(function() {
+    dispatch({type:'ADD'})
+  }, 3000);
+});
+// promise
+store.dispatch(new Promise((resolve, reject) => {
+  setTimeout(()=>{
+    resolve({type:'ADD'});
+  },3000)
+}));
