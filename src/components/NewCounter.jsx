@@ -24,6 +24,13 @@ let mapDispatchToProps = (dispatch) => ({
     onDecrease: ()=>dispatch({type:DECREASE})
 })
 
-let App = connect(mapStateToProps, mapDispatchToProps)(NewCounter);
+let App = connect(mapStateToProps, {
+  onIncrease: function() {
+    return {type:INCREASE}
+  },
+  onDecrease: function() {
+    return {type:DECREASE}
+  }
+})(NewCounter);
 
 export default App
